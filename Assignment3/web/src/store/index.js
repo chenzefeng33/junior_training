@@ -5,6 +5,7 @@ Vue.use(Vuex)
 
 export default new Vuex.Store({
   state: {
+    globalUrl: 'http://localhost:9090'
   },
   getters: {
   },
