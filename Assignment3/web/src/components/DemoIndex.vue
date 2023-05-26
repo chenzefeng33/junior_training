@@ -80,7 +80,6 @@
         </el-form-item>
         <el-form-item>
           <el-button type="primary" @click="SearchBillsSubmit">查询</el-button>
-          <el-button type="primary" @click="getList">重置</el-button>
         </el-form-item>
       </el-form>
 
@@ -107,6 +106,49 @@
         </el-table-column>
       </el-table>
     </div>
+
+    <!--    样式代码-->
+    <div style="height: 20px"></div>
+
+    <div>
+      <el-form :inline="true" :model="SearchStateForm">
+        <el-form-item>
+          <el-input v-model="SearchStateForm.id" placeholder="请输入id">
+          </el-input>
+        </el-form-item>
+        <el-form-item>
+          <el-button type="primary" @click="SearchStateSubmit">查询</el-button>
+        </el-form-item>
+      </el-form>
+
+      <el-table
+          :data="tableData1"
+          stripe
+          border
+          style="width: 100%">
+        <el-table-column
+            prop="order_id"
+            label="订单ID">
+        </el-table-column>
+        <el-table-column
+            prop="Logistics_status"
+            label="订单状态">
+        </el-table-column>
+        <el-table-column
+            prop="Transportation_status"
+            label="物流状态">
+        </el-table-column>
+        <el-table-column
+            prop="state_id"
+            label="状态ID">
+        </el-table-column>
+        <el-table-column
+            prop="shipment_name"
+            label="承运人">
+        </el-table-column>
+      </el-table>
+    </div>
+
   </div>
 </template>
 
@@ -180,6 +222,18 @@ export default {
         shipper: '',
         fee: '',
         shipment_name: ''
+      },
+
+      SearchStateForm:{
+        id: ''
+      },
+      tableData1: [],
+      StateForm:{
+        order_id: '',
+        Logistics_status: '',
+        Transportation_status: '',
+        state_id: '',
+        shipment_name: ''
       }
     }
   },
@@ -250,18 +304,29 @@ export default {
           'Content-Type': 'application/json'
         },
         method:"get",
-        url: this.$store.state.globalUrl + "/user/list_supplier?supplier_name="+this.SearchBillsForm.name
+        url: this.$store.state.globalUrl + "/Search/SearchBills?shipment_name="+this.SearchBillsForm.name
       })
           .then(res => {
             console.log(res.data)
             this.tableData = res.data;
-            this.total = res.data.length;
           }).catch(error => {
         console.log(error);
       });
     },
-    getList(){
-
+    SearchStateSubmit(){
+      axios({
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        method:"get",
+        url: this.$store.state.globalUrl + "/Search/SearchState?order_id="+this.SearchStateForm.id
+      })
+          .then(res => {
+            console.log(res.data)
+            this.tableData1 = res.data;
+          }).catch(error => {
+        console.log(error);
+      });
     }
   }
 }
