@@ -1,0 +1,26 @@
+server:
+  port: 8500
+
+spring:
+  application:
+    name: gateway
+  cloud:
+    gateway:
+      routes:
+      - id: search-service
+        uri: lb://searchservice
+        predicates:
+          - Path=/Search/**
+      - id: create-service
+        uri: lb://createservice
+        predicates:
+          - Path=/Create/**
+      - id: billssate-service
+        uri: lb://billsstateservice
+        predicates:
+          - Path=/BillsState/**
+
+eureka:
+  client:
+    service-url:
+      defaultZone: http://localhost:8801/eureka, http://localhost:8802/eureka
